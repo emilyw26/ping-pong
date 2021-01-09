@@ -58,7 +58,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-        teamOneName(),
+          teamOneName(),
           createCounter(true),
           SizedBox(height: 50),
           teamTwoName(),
@@ -76,7 +76,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
         child: TextField(
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 20,   // This is not so important
+            fontSize: 30,
           ),
           controller: _controllerForTeamOne,
           decoration: InputDecoration(
@@ -100,7 +100,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
       child: TextField(
         textAlign: TextAlign.center,
         style: TextStyle(
-          fontSize: 20,   // This is not so important
+          fontSize: 30,
         ),
         controller: _controllerForTeamTwo,
         decoration: InputDecoration(
@@ -123,7 +123,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         createCounterButton('-', isTeamOne, false),
-        Text(isTeamOne ? _teamOneCounter.toString() : _teamTwoCounter.toString(), style: Theme.of(context).textTheme.display1),
+        Text(isTeamOne ? _teamOneCounter.toString() : _teamTwoCounter.toString(), style: TextStyle(fontSize: 75)),
         createCounterButton('+', isTeamOne, true)
       ]
     );
@@ -131,11 +131,11 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
 
   Widget createCounterButton(String label, bool isTeamOne, bool shouldAdd) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(10.0, 7, 10.0, 10.0),
+      padding: const EdgeInsets.fromLTRB(10.0, 20, 10.0, 10.0),
       child: SizedBox(
-            width: 45,
+            width: 90,
             child: RaisedButton(
-              child: Text(label, style: TextStyle(fontSize: 24, color: Colors.white)),
+              child: Text(label, style: TextStyle(fontSize: 75, color: Colors.white)),
               color: Colors.blue,
               onPressed: () {
                 if (!shouldAdd) {
@@ -152,51 +152,58 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
 
                 });
 
-                if (_teamOneCounter >= 21 || _teamTwoCounter >= 21) {
-                  String winner;
-                  if (_teamOneCounter - _teamTwoCounter >= 2) {
-                    winner = _teamOneName;
-                  } else if (_teamTwoCounter - _teamOneCounter >= 2) {
-                    winner = _teamTwoName;
-                  }
-
-                  if (winner != null) {
-                    showDialog(
-                        context: context,
-                        builder: (_) => AlertDialog(
-                            title: Text('$winner WINS!'),
-                            actions: <Widget>[
-                              FlatButton(
-                                child: Text('NEXT GAME'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-
-                                  setState(() {
-                                    _teamOneCounter = 0;
-                                    _teamTwoCounter = 0;
-                                  });
-                                },
-                              )
-                            ]
-                        )
-                    );
-                  }
-                }
+                checkWinner();
               },
             ),
           ),
     );
   }
 
-  Widget resetButton() {
-    return RaisedButton(
-      child: Text('RESET SCORES'),
-      onPressed: () {
-        setState(() {
-          _teamOneCounter = 0;
-          _teamTwoCounter = 0;
-        });
+  void checkWinner() {
+    if (_teamOneCounter >= 21 || _teamTwoCounter >= 21) {
+      String winner;
+      if (_teamOneCounter - _teamTwoCounter >= 2) {
+        winner = _teamOneName;
+      } else if (_teamTwoCounter - _teamOneCounter >= 2) {
+        winner = _teamTwoName;
       }
+
+      if (winner != null) {
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                title: Text('$winner WINS!'),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('NEXT GAME'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+
+                      setState(() {
+                        _teamOneCounter = 0;
+                        _teamTwoCounter = 0;
+                      });
+                    },
+                  )
+                ]
+            )
+        );
+      }
+    }
+  }
+
+  Widget resetButton() {
+    return SizedBox(
+      height: 50,
+      child: RaisedButton(
+        child: Text('RESET SCORES', style: TextStyle(fontSize: 25)),
+        onPressed: () {
+          setState(() {
+            _teamOneCounter = 0;
+            _teamTwoCounter = 0;
+          });
+        }
+      ),
     );
   }
 }
