@@ -139,7 +139,8 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(10.0, 20, 10.0, 10.0),
       child: SizedBox(
-            width: 90,
+            width: 100,
+            height: 100,
             child: RaisedButton(
               child: Text(label, style: TextStyle(fontSize: 75, color: Colors.white)),
               color: Colors.blue,
