@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 void main() => runApp(MyApp());
 
@@ -37,6 +38,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
   TextEditingController _controllerForTeamOne;
   TextEditingController _controllerForTeamTwo;
   bool isDisabled = false;
+  FlutterTts flutterTts = FlutterTts();
 
   void initState() {
     super.initState();
@@ -55,6 +57,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text(widget.title, style: TextStyle(fontSize: 20)),
       ),
@@ -144,18 +147,26 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
             child: RaisedButton(
               child: Text(label, style: TextStyle(fontSize: 75, color: Colors.white)),
               color: Colors.blue,
-              onPressed: isDisabled ? null : () {
+              onPressed: isDisabled ? null : () async {
                 if (!shouldAdd) {
                   if (isTeamOne && _teamOneCounter == 0 || !isTeamOne && _teamTwoCounter == 0) {
                     return null;
                   }
                 }
+
+                await flutterTts.setLanguage("en-GB");
+                await flutterTts.setVolume(1.0);
+                await flutterTts.isLanguageAvailable("en-GB");
+                await flutterTts.setSpeechRate(0.5);
+
                 setState(() {
                   if (shouldAdd) {
                     isTeamOne ? _teamOneCounter++ : _teamTwoCounter++;
                   } else {
                     isTeamOne ? _teamOneCounter-- : _teamTwoCounter--;
                   }
+
+                  announceTeamPoints();
 
                   isDisabled = true;
 
@@ -174,6 +185,21 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
             ),
           ),
     );
+  }
+
+  void announceTeamPoints() {
+    String pointsForTeamOne = 'points';
+    String pointsForTeamTwo = 'points';
+
+    if (_teamOneCounter == 1) {
+      pointsForTeamOne = 'point';
+    }
+
+    if (_teamTwoCounter == 1) {
+      pointsForTeamTwo = 'point';
+    }
+
+    flutterTts.speak('$_teamOneName has $_teamOneCounter $pointsForTeamOne. $_teamTwoName has $_teamTwoCounter $pointsForTeamTwo.');
   }
 
   void checkWinner() {

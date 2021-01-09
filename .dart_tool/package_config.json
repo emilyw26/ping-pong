@@ -92,6 +92,18 @@
       "languageVersion": "2.2"
     },
     {
+      "name": "flutter_tts",
+      "rootUri": "file:///Users/ewu/Desktop/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_tts-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
+      "name": "flutter_web_plugins",
+      "rootUri": "file:///Users/ewu/Desktop/flutter/packages/flutter_web_plugins",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
       "name": "image",
       "rootUri": "file:///Users/ewu/Desktop/flutter/.pub-cache/hosted/pub.dartlang.org/image-2.1.4",
       "packageUri": "lib/",
@@ -194,7 +206,7 @@
       "languageVersion": "2.1"
     }
   ],
-  "generated": "2021-01-08T21:24:05.059595Z",
+  "generated": "2021-01-09T00:33:25.697651Z",
   "generator": "pub",
   "generatorVersion": "2.10.4"
 }
