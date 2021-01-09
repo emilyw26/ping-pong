@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -34,6 +36,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
   String _teamTwoName = 'TEAM TWO';
   TextEditingController _controllerForTeamOne;
   TextEditingController _controllerForTeamTwo;
+  bool isDisabled = false;
 
   void initState() {
     super.initState();
@@ -53,7 +56,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title, style: TextStyle(fontSize: 18)),
+        title: Text(widget.title, style: TextStyle(fontSize: 20)),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -72,7 +75,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
 
   SizedBox teamOneName() {
     return SizedBox(
-        width: 200,
+        width: 300,
         child: TextField(
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -96,7 +99,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
 
   SizedBox teamTwoName() {
     return SizedBox(
-      width: 200,
+      width: 300,
       child: TextField(
         textAlign: TextAlign.center,
         style: TextStyle(
@@ -123,7 +126,10 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         createCounterButton('-', isTeamOne, false),
-        Text(isTeamOne ? _teamOneCounter.toString() : _teamTwoCounter.toString(), style: TextStyle(fontSize: 75)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Text(isTeamOne ? _teamOneCounter.toString() : _teamTwoCounter.toString(), style: TextStyle(fontSize: 75)),
+        ),
         createCounterButton('+', isTeamOne, true)
       ]
     );
@@ -137,7 +143,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
             child: RaisedButton(
               child: Text(label, style: TextStyle(fontSize: 75, color: Colors.white)),
               color: Colors.blue,
-              onPressed: () {
+              onPressed: isDisabled ? null : () {
                 if (!shouldAdd) {
                   if (isTeamOne && _teamOneCounter == 0 || !isTeamOne && _teamTwoCounter == 0) {
                     return null;
@@ -150,7 +156,17 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                     isTeamOne ? _teamOneCounter-- : _teamTwoCounter--;
                   }
 
+                  isDisabled = true;
+
+                  Timer(Duration(seconds: 3),() {
+                    setState( () {
+                      isDisabled = false;
+                    });
+                  });
+
                 });
+
+
 
                 checkWinner();
               },
