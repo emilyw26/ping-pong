@@ -138,6 +138,11 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
               child: Text(label, style: TextStyle(fontSize: 24, color: Colors.white)),
               color: Colors.blue,
               onPressed: () {
+                if (!shouldAdd) {
+                  if (isTeamOne && _teamOneCounter == 0 || !isTeamOne && _teamTwoCounter == 0) {
+                    return null;
+                  }
+                }
                 setState(() {
                   if (shouldAdd) {
                     isTeamOne ? _teamOneCounter++ : _teamTwoCounter++;
@@ -146,6 +151,37 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                   }
 
                 });
+
+                if (_teamOneCounter >= 21 || _teamTwoCounter >= 21) {
+                  String winner;
+                  if (_teamOneCounter - _teamTwoCounter >= 2) {
+                    winner = _teamOneName;
+                  } else if (_teamTwoCounter - _teamOneCounter >= 2) {
+                    winner = _teamTwoName;
+                  }
+
+                  if (winner != null) {
+                    showDialog(
+                        context: context,
+                        builder: (_) => AlertDialog(
+                            title: Text('$winner WINS!'),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text('NEXT GAME'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+
+                                  setState(() {
+                                    _teamOneCounter = 0;
+                                    _teamTwoCounter = 0;
+                                  });
+                                },
+                              )
+                            ]
+                        )
+                    );
+                  }
+                }
               },
             ),
           ),

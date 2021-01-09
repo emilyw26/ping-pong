@@ -1,0 +1,4 @@
+#Sun Jan 03 15:50:09 EST 2021
+base.0=/Users/ewu/Desktop/ping-pong/build/app/intermediates/transforms/r8/release/0/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
